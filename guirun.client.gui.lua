@@ -29,35 +29,56 @@ local thirdWindow 		= utils.window[2]
 	local errorLabel	= utils.label[2]
 	local saveEdit		= utils.edit[1]
 
-
+--[[
+	Edit to liking
+	-- TODO: Allow settings to be editable via admin panel.
+--]]
 local settings = {
 	hoverColor = {93, 174, 48},
 	leaveColor = {255, 255,255},
+	
+	elementType = {
+		WINDOW = "gui-window",
+		LABEL = "gui-label",
+	}
 }
 
-
+--[[
+	--@Desc: Opens or closes window of choice based on boolean given.
+	--@Param: (Type: gui-window) window, (Type: boolean) bool
+	--@Returns: true if successful, false otherwise.  
+--]]
 function windowSetVisible(window, bool)
-	assert(getElementType(window) == "gui-window" or type(bool) == "boolean")
+	bool = bool or true	-- If no bool is retrieved then set to true.
 
-	window:setVisible(bool)
-	
-	if isCursorShowing() ~= bool then
-		showCursor(bool)
+	-- Check for correct type of element.
+	if getElementType(window) == elementType.WINDOW then 
+		window:setVisible(bool)
+		if isCursorShowing() ~= bool then
+			showCursor(bool)
+		end
+		return true
+	else
+		outputDebugString("expected type "..elementType.WINDOW.." got: "..getElementType(window))
+		return false
 	end
-	return
 end
 
-
+--[[
+	Changes color of gui-label element attached to event.
+--]]
 function labelEntered()
-	assert(getElementType(label) == "gui-label")
+	assert(getElementType(this) == "gui-label")
 
 	local i = settings.hoverColor
-	source:setColor(i[1], i[2], i[3])
+	this:setColor(i[1], i[2], i[3])
 end
 
 function labelLeft()
-	assert(getElementType(label) == "gui-label")
+	assert(getElementType(this) == "gui-label")
 
-	local i = settings.hoverColor
-	source:setColor(i[1], i[2], i[3])
+	local i = settings.leaveColor
+	this:setColor(i[1], i[2], i[3])
 end
+
+
