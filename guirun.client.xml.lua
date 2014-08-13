@@ -12,6 +12,7 @@ local findChild		= xmlFindChild
 local loadFile		= xmlLoadFile
 local getAttributes = xmlNodeGetAttributes
 local setAttribute	= xmlNodeSetAttribute
+local getAttribute 	= xmlNodeGetAttribute
 
 local settings = {
 	fileName 	= "code.xml",
@@ -19,7 +20,8 @@ local settings = {
 	childNode 	= "code",
 }
 
-local code = {
+-- PUBLIC table for gui to use.
+code = {
 	
 }
 
@@ -54,6 +56,7 @@ function xmlDoesFileExist()
 	return false
 end
 
+-- Read file and populate code table.
 function xmlGetCode()
 
 	local root, child = nil, nil
@@ -68,9 +71,35 @@ function xmlGetCode()
 					code[i] = v
 				end
 			end
+			outputDebugString("Found "..#code.." files...")
+			unloadFile(root)
+			return true
 		end
 	end
 
 	outputDebugString("ROOT: "..tostring(root).." CHILD: "..tostring(child))
 	return false
+end
+
+-- Make overwriting possible
+function xmlDoesAttributeAlreadyExist(attributeName)
+	assert(type(attributeName) == "string")
+	local root, child, attribute = loadFile(settings.fileName), nil, nil
+
+	if root then
+		child = findChild(root, settings.childNode, 0)
+		if child then
+			attribute = getAttribute(child, attributeName)
+			if attribute then
+				return true
+			end
+		end
+	end
+
+	outputDebugString("ROOT: "..tostring(root).." CHILD: "..tostring(child).." ATTRIBUTE: "..tostring(attribute))
+	return false
+end
+
+function xmlSaveCode(codeName)
+	
 end

@@ -81,4 +81,14 @@ function labelLeft()
 	this:setColor(i[1], i[2], i[3])
 end
 
+-- Populates gridlist with saves made
+-- this can be loaded.
+function populateGridList()
+	gridlist:clear()	-- Renew gridlist
 
+	for i, v in ipairs(code) do
+		local row = gridlist:addRow()
+		gridList:setItemText(row, 1, i)
+	end
+	outputDebugString("GridList populated")
+end
