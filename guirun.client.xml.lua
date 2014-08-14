@@ -39,6 +39,7 @@ function xmlCreate()
 			unloadFile(root)
 			return true
 		end
+		unloadFile(root)
 	end
 
 	outputDebugString("ROOT NODE: "..tostring(root).." CHILD NODE: "..tostring(childNode))
@@ -57,6 +58,7 @@ function xmlDoesFileExist()
 end
 
 -- Read file and populate code table.
+-- @return boolean based on success
 function xmlGetCode()
 
 	local root, child = nil, nil
@@ -75,6 +77,7 @@ function xmlGetCode()
 			unloadFile(root)
 			return true
 		end
+		unloadFile(root)
 	end
 
 	outputDebugString("ROOT: "..tostring(root).." CHILD: "..tostring(child))
@@ -82,7 +85,9 @@ function xmlGetCode()
 end
 
 -- Make overwriting possible
-function xmlDoesAttributeAlreadyExist(attributeName)
+-- @params string attributeName
+-- @return boolean whether an attribute exists or not.
+function xmlAttributeExist(attributeName)
 	assert(type(attributeName) == "string")
 	local root, child, attribute = loadFile(settings.fileName), nil, nil
 
@@ -94,12 +99,34 @@ function xmlDoesAttributeAlreadyExist(attributeName)
 				return true
 			end
 		end
+		unloadFile(root)
 	end
 
 	outputDebugString("ROOT: "..tostring(root).." CHILD: "..tostring(child).." ATTRIBUTE: "..tostring(attribute))
 	return false
 end
 
-function xmlSaveCode(codeName)
-	
+-- @desc Saves code to XML.
+-- @param string codeName, string code
+-- @returns boolean based on success.
+function xmlSaveCode(codeName, code)
+	assert(type(codeName, code) == "string")
+    local root, child = loadFile(settings.fileName), nil
+    
+    if root then
+        child = findChild(root, settings.childNode, 0)
+        if child then
+            local success = setAttribute(child, codeName, code)
+            if success then
+                saveFile(root)  -- Save code
+                unloadFile(root)
+                return true
+            end
+        end
+        unloadFile(root)
+    end
+    
+    outputDebugString("ROOT: "..tostring(root).." CHILD: "..tostring(child))
+    return false
 end
+

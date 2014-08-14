@@ -40,7 +40,9 @@ local settings = {
 	elementType = {
 		WINDOW = "gui-window",
 		LABEL = "gui-label",
-	}
+	},
+
+	warnings = {}
 }
 
 --[[
@@ -92,3 +94,4 @@ function populateGridList()
 	end
 	outputDebugString("GridList populated")
 end
+
