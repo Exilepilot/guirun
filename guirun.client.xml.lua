@@ -2,6 +2,13 @@
 	Handles the client XML part of script.
 --]]
 
+--	CHANGE VALUES CAREFULLY!
+
+local settings = {
+	fileName 	= "code.xml",	-- File name of .xml file
+	rootNode 	= "root",		-- rootNode name
+	childNode 	= "code",		-- childNode name
+}
 -- RENAME FUNCTIONS NEEDED
 
 local createFile 	= xmlCreateFile
@@ -14,17 +21,15 @@ local getAttributes = xmlNodeGetAttributes
 local setAttribute	= xmlNodeSetAttribute
 local getAttribute 	= xmlNodeGetAttribute
 
-local settings = {
-	fileName 	= "code.xml",
-	rootNode 	= "root",
-	childNode 	= "code",
-}
+
 
 -- PUBLIC table for gui to use.
 code = {
 	
 }
-
+--------------------------------------------------
+--
+--------------------------------------------------
 -- Creates code read/write file.
 function xmlCreate()
 	local problem = false
@@ -129,4 +134,5 @@ function xmlSaveCode(codeName, code)
     outputDebugString("ROOT: "..tostring(root).." CHILD: "..tostring(child))
     return false
 end
+
 

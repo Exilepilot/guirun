@@ -1,0 +1,7 @@
+<meta>
+	<oop>true</oop>
+	<!--<script src="GUIDUMP/gui.lua" type="client" />-->
+	<script src="guirun.client.xml.lua" type="client" />
+	<script src="guirun.client.gui.lua" type="client" />
+	
+</meta>
