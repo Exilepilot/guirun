@@ -111,3 +111,9 @@ addEventHandler("onClientGUIClick", guirun.second.button[1],
 		end	
 	end
 )
+
+addEventHandler("onClientGUIClick", guirun.second.button[3],
+	function ( ... )
+		local _mode = guiGetText(guirun.second.window)
+		guirun:expandWindow(not settings._EXPANDED)
+	end)

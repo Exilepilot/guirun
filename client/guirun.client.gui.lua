@@ -26,11 +26,17 @@ settings = {
 		"No code to save"
 	},
 
+	secondWindow = {
+		0.22,	-- 
+		0.38, 	-- Expanded
+	},
+
 	runMode = {"SRUN", "CRUN"}, -- Conversion for radiobuttons DO NOT CHANGE
 
 	fileName 	= "config.xml",	-- File name of .xml file
 	rootNode 	= "root",		-- rootNode name
 	childNode 	= "code",		-- childNode name
+	_EXPANDED 	= false,
 }
 
 -- Usually where the code that is loaded will end up.
@@ -111,68 +117,64 @@ guirun.window 	  		  = guiCreateWindow(0.26, 0.27, 0.47, 0.46, "RUNCODE", true)
 -- deleted in the near future.
 --------------------------------------------------
 
+-- (, 0.22, 0.51) Unaltered state
+
 guirun.second = {
+    checkbox = {},
     edit = {},
     button = {},
     label = {},
     gridlist = {}
 }
 
--- MAIN LOAD/SAVE WINDOW
-guirun.second.window 			= guiCreateWindow(0.40, 0.27, 0.20, 0.51, "", true)
-	guirun.second.gridlist[1] 	= guiCreateGridList(0.04, 0.08, 0.93, 0.81, true, guirun.second.window)
-	guirun.second.button[1] 	= guiCreateButton(0.04, 0.89, 0.46, 0.05, "", true, guirun.second.window)
-	guirun.second.button[2] 	= guiCreateButton(0.50, 0.89, 0.46, 0.05, "BACK", true, guirun.second.window)
+
+
+guirun.second.window = guiCreateWindow(0.31, 0.24, 0.38, 0.51, "SAVE CODE", true)
+	guirun.second.gridlist[1] = guiCreateGridList(10, 31, 254, 318, false, guirun.second.window)
+	guirun.second.edit[1] = guiCreateEdit(322, 51, 171, 31, "", false, guirun.second.window)
+	guirun.second.label[1] = guiCreateLabel(0.62, 0.05, 0.33, 0.04, "NAME", true, guirun.second.window)
+	guirun.second.label[2] = guiCreateLabel(327, 98, 187, 59, "Save temporarily\n\nWhen you disconnect it's gone!", false, guirun.second.window)
+	guirun.second.checkbox[1] = guiCreateCheckBox(306, 98, 16, 16, "", false, false, guirun.second.window)
+	guirun.second.button[1] = guiCreateButton(10, 349, 125, 20, "SAVE", false, guirun.second.window)
+	guirun.second.button[2] = guiCreateButton(140, 349, 125, 20, "BACK", false, guirun.second.window)
+	guirun.second.button[3] = guiCreateButton(275, 31, 21, 337, ">>\n>>\n>>", false, guirun.second.window)
+	guirun.second.button[4] = guiCreateButton(322, 220, 171, 27, "DELETE", false, guirun.second.window)
+	guirun.second.button[5] = guiCreateButton(322, 259, 171, 27, "RENAME", false, guirun.second.window)
+	guirun.second.button[6] = guiCreateButton(322, 298, 171, 27, "LOAD", false, guirun.second.window)
+
+-- Hide some shit
+	guirun.second.edit[1]:setVisible(false)
+	guirun.second.label[1]:setVisible(false)
+	guirun.second.label[2]:setVisible(false)
+	guirun.second.checkbox[1]:setVisible(false)
+	guirun.second.button[4]:setVisible(false)
+	guirun.second.button[5]:setVisible(false)
+	guirun.second.button[6]:setVisible(false)
 
 -- WINDOW SETTINGS
-	guiWindowSetMovable(guirun.second.window, false)
+	guiWindowSetMovable(guirun.second.window, true)
 	guiWindowSetSizable(guirun.second.window, false)
 	guiSetAlpha(guirun.second.window, 0.87)
 	guiSetProperty(guirun.second.window, "AlwaysOnTop", "True")
 	guiSetVisible(guirun.second.window, false)
+	guiSetSize(guirun.second.window, 0.22, 0.51, true)	-- 0.38, 0.51 
+
+-- LABEL SETTINGS
+
+	guiLabelSetVerticalAlign(guirun.second.label[1], "center")
+	guiLabelSetHorizontalAlign(guirun.second.label[1], "center", false)
+	guiLabelSetHorizontalAlign(guirun.second.label[2], "left", true)
 
 -- GRIDLIST SETTINGS
 	local column = guiGridListAddColumn(guirun.second.gridlist[1], "NAME", 0.9)
-	
+
 -- BUTTON SETTINGS
 	guiSetProperty(guirun.second.button[1], "NormalTextColour", "FFAAAAAA")
 	guiSetProperty(guirun.second.button[2], "NormalTextColour", "FFAAAAAA")
-
---------------------------------------------------
--- At the moment it's a rather obsolete panel however it's
--- used to record the actual name of the piece of code 
--- you've wrote.
---------------------------------------------------
-
-guirun.third = {
-    edit = {},
-    label = {}
-}
--- THIS WINDOW IS TO COMPLEMENT THE SAVE FEATURE
-guirun.third.window 			= guiCreateWindow(0.60, 0.27, 0.13, 0.17, "Details", true)
-	guirun.third.label[1] 		= guiCreateLabel(0.05, 0.24, 0.40, 0.12, "Name", true, guirun.third.window)
-	guirun.third.label[2] 		= guiCreateLabel(0.05, 0.65, 0.89, 0.27, "Name is required!", true, guirun.third.window)
-	guirun.third.edit[1] 		= guiCreateEdit(0.05, 0.40, 0.89, 0.18, "", true, guirun.third.window)
-
--- WINDOW SETTINGS
-
-	guiWindowSetMovable(guirun.third.window, false)
-	guiWindowSetSizable(guirun.third.window, false)
-	guiSetAlpha(guirun.third.window, 0.87)
-	guiSetProperty(guirun.third.window, "AlwaysOnTop", "True")
-	guiSetVisible(guirun.third.window, false)
-
-
--- LABEL SETTINGS
-	guiSetFont(guirun.third.label[1], "default-bold-small")
-	guiLabelSetHorizontalAlign(guirun.third.label[1], "center", false)
-	guiLabelSetVerticalAlign(guirun.third.label[1], "center")
-
-	guiSetFont(guirun.third.label[2], "default-bold-small")
-	guiLabelSetHorizontalAlign(guirun.third.label[2], "center", false)
-	guiLabelSetVerticalAlign(guirun.third.label[2], "center")
-	guirun.third.label[2]:setVisible(false)	
-
+	guiSetProperty(guirun.second.button[3], "NormalTextColour", "FFAAAAAA")
+	guiSetProperty(guirun.second.button[4], "NormalTextColour", "FFAAAAAA")
+	guiSetProperty(guirun.second.button[5], "NormalTextColour", "FFAAAAAA")
+	guiSetProperty(guirun.second.button[6], "NormalTextColour", "FFAAAAAA")
 
 
 --   /$$$$$$  /$$   /$$ /$$$$$$       /$$$$$$$$ /$$   /$$ /$$   /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$  /$$   /$$  /$$$$$$ 
@@ -243,7 +245,7 @@ end
 function guirun:setLoadMode(bool)
 	assert(type(bool) == "boolean", "Incorrect type expected boolean -> guirun:setLoadMode(bool)")
 	local window = self.second.window
-	local other = self.third.window
+	--local other = self.third.window
 	local funcButton = self.second.button[1]
 
 		window:setVisible(bool)
@@ -255,6 +257,35 @@ function guirun:setLoadMode(bool)
 		end
 		return true
 end
+
+function guirun:otherElements(bool)
+	guiSetVisible(guirun.second.edit[1]    ,bool)
+	guiSetVisible(guirun.second.label[1]   ,bool)
+	guiSetVisible(guirun.second.label[2]   ,bool)
+	guiSetVisible(guirun.second.checkbox[1],bool)
+	guiSetVisible(guirun.second.button[4]  ,bool)
+	guiSetVisible(guirun.second.button[5]  ,bool)
+	guiSetVisible(guirun.second.button[6]  ,bool)
+end
+
+function guirun:expandWindow(bool)
+	assert(type(bool) == "boolean", "Incorrect type expected bool")
+	local i = settings.secondWindow
+	local _, h = guiGetSize(self.second.window, true)
+
+	if bool then
+		guiSetSize(self.second.window, i[2], h, true)
+		self:otherElements(bool)
+		guiSetText(self.second.button[3], guiGetText(self.second.button[3]):gsub(">", "<"))
+		settings._EXPANDED = true
+	else
+		guiSetSize(self.second.window, i[1], h, true)
+		self:otherElements(bool)
+		guiSetText(self.second.button[3], guiGetText(self.second.button[3]):gsub("<", ">"))
+		settings._EXPANDED = false
+	end
+end
+
 
 --------------------------------------------------
 -- Populates the gridlist with contents of XML file.
