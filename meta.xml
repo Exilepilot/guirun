@@ -2,5 +2,12 @@
 	<oop>true</oop>
 	<!--<script src="GUIDUMP/gui.lua" type="client" />-->
 	<file src="config.xml" />
-	<script src="client.lua" type="client" />
+	<!-- <script src="client.lua" type="client" /> -->
+
+	<!-- GUI -->
+	<script src="client/guirun.client.gui.lua" type="client"/>
+	<!-- XML -->
+	<script src="client/guirun.client.xml.lua" type="client"/>
+	<!-- EVENTS -->
+	<script src="client/guirun.client.events.lua" type="client"/>
 </meta>
