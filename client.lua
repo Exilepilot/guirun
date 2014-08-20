@@ -271,6 +271,7 @@ end
 function guirun:populateGridlist()
 	if code ~= nil or #code > 0 then
 		local gridlist = self.second.gridlist[1]
+		gridlist:clear()	-- clear first
 		for k, v in pairs(code) do
 			local r = guiGridListAddRow(gridlist)
 			guiGridListSetItemText(gridlist, r, column, k, false, false)
@@ -386,33 +387,26 @@ end
 -- errors and such. This loads code onto code table
 
 -- Pilot - Fixed function not working properly
--- TODO: Make these errors actually mean something for the user.
--- TODO: Make function shorter and more readable rather than this fucking mess!
 --------------------------------------------------
 function loadCode()
-	if not fileExist() then outputDebugString("File doesn't exist") return false end
+	assert(fileExist(), "Whoops seems like no files have been found!")
 
-	local root, child = xmlLoadFile(settings.fileName), nil
+	local root, child = xmlLoadFile(settings.fileName)
 
 	if root then
 		child = xmlFindChild(root, settings.childNode, 0)
-		outputDebugString("test")
 		if child then
-			local attr = xmlNodeGetAttributes(child)
-			if attr then
-				code = attr
-				return true
-			else
-				outputDebugString("Cannot get childNode attributes")
-			end
-		else
-			outputDebugString("Cannot find child node")
+			local attributes = xmlNodeGetAttributes(child)
+			assert( type(attributes) == "table", "Unable to use this data" )
+			-- If not useless
+			code = attributes
+			xmlUnloadFile(root)
+			return true
 		end
-	else
-		outputDebugString("Cannot load file")
+		assert( child, "Cannot find child node" )
+		xmlUnloadFile(root)
 	end
-
-	xmlUnloadFile(root)
+	assert( root, "Cannot find root node" )
 	return false
 end
 
